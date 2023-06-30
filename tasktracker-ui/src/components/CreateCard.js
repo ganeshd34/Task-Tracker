@@ -1,36 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class CreateCard extends React.Component {
-  state = {
-    input: '',
-  };
+function CreateCard(props) {
+  const [input, setInput] = useState('');
 
-  handleInput = (event) => {
+  const handleInput = (event) => {
     event.persist();
-    console.log(event.target.value)
-    this.setState({ input: event.target.value });
+    console.log(event.target.value);
+    setInput(event.target.value);
   };
 
-  handleNewCard = (event) => {
+  const handleNewCard = (event) => {
     event.preventDefault();
     console.log('Create new card');
-    this.props.createNewCard(this.state.input);
+    props.createNewCard(input);
   };
 
-  render() {
-    return (
-      <form className='new-card-form' onSubmit={this.handleNewCard}>
-        <h4>Create Card</h4>
-        <input
-          onChange={this.handleInput}
-          className='new-card-input'
-          type='text'
-          value={this.state.input}
-        />
-        <input className='new-card-input' type='submit' value='Create' />
-      </form>
-    );
-  }
+  return (
+    <form className='new-card-form' onSubmit={handleNewCard}>
+      <h4>Create Card</h4>
+      <input
+        onChange={handleInput}
+        className='new-card-input'
+        type='text'
+        value={input}
+      />
+      <input className='new-card-input' type='submit' value='Create' />
+    </form>
+  );
 }
 
 export default CreateCard;

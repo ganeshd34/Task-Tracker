@@ -1,43 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ToDoList from './ToDoList';
 
-class ToDoCard extends React.Component {
-  state = {
-    input: '',
+function ToDoCard(props) {
+  const [input, setInput] = useState('');
+  
+  const handleOnInput = (event) => {
+    setInput(event.target.value);
   };
-  handleOnInput = (event) => {
-    this.setState({
-      input: event.target.value,
-    });
-  };
-  handleOnSubmitList = (event) => {
+
+  const handleOnSubmitList = (event) => {
     event.preventDefault();
-    console.log('input:', this.state.input);
-    this.props.addToDoList(this.props.card.id, this.state.input);
-    this.setState({input:''})
+    console.log('input:', input);
+    props.addToDoList(props.card.id, input);
+    setInput('');
   };
-  renderLists() {
-    return this.props.card.list.map((item) => {
-      return <ToDoList key={item.id} cardId={this.props.card.id} toDoItem={item} handleTodoListClick={this.props.handleTodoListClick} />;
+
+  const renderLists = () => {
+    return props.card.list.map((item) => {
+      return (
+        <ToDoList
+          key={item.id}
+          cardId={props.card.id}
+          toDoItem={item}
+          handleTodoListClick={props.handleTodoListClick}
+        />
+      );
     });
-  }
-  render() {
-    return (
-      <div className='to-do-card'>
-        <h4>
-          {this.props.card.title}
-        </h4>
-        <form onSubmit={this.handleOnSubmitList}>
-          <input
-            type='text'
-            value={this.state.input}
-            onChange={this.handleOnInput}
-          />
-        </form>
-        {this.renderLists()}
-      </div>
-    );
-  }
+  };
+
+  return (
+    <div className='to-do-card'>
+      <h4>{props.card.title}</h4>
+      <form onSubmit={handleOnSubmitList}>
+        <input type='text' value={input} onChange={handleOnInput} />
+      </form>
+      {renderLists()}
+    </div>
+  );
 }
 
 export default ToDoCard;
